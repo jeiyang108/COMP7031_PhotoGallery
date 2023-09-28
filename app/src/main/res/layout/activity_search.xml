@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
     tools:context=".SearchActivity">
     <TextView
-        android:id="@+id/tvFromDateTime"  android:text="From: "
+        android:id="@+id/tvFromDateTime" android:text="Start Date: " android:textSize="15dp"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/etFromDateTime" android:layout_alignStart="@+id/btnCancel"
-        android:textSize="24sp" />
-    <EditText
-        android:id="@+id/etFromDateTime" android:inputType="date"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true" android:layout_alignParentTop="true"
-        android:layout_marginTop="38dp" android:ems="10" android:textSize="24sp" />
+        android:layout_marginStart="16dp" android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
     <TextView
-        android:id="@+id/tvToDateTime"  android:text="To: "
+        android:id="@+id/tvToDateTime" android:text="End Date: " android:textSize="15dp"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" android:layout_alignStart="@+id/tvFromDateTime"
-        android:layout_marginTop="98dp" android:textSize="24sp" />
+        android:layout_marginStart="16dp" android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/etFromDateTime" />
     <EditText
-        android:id="@+id/etToDateTime" android:inputType="date"
+        android:id="@+id/etFromDateTime" android:textSize="15dp" android:inputType="date"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvToDateTime" android:layout_alignParentEnd="true"
-        android:layout_marginEnd="31dp" android:ems="10"
-        android:textSize="24sp" />
+        android:layout_marginStart="16dp" android:layout_marginTop="16dp"
+        android:ems="10" android:minHeight="48dp" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFromDateTime" tools:ignore="SpeakableTextPresentCheck" />
+    <EditText
+        android:id="@+id/etToDateTime" android:textSize="15dp" android:inputType="date"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginStart="16dp" android:layout_marginTop="16dp" android:ems="10" android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/tvToDateTime" />
     <TextView
-        android:id="@+id/tvKeywords" android:text="Keywords: "
+        android:id="@+id/tvKeywords" android:text="Keywords: " android:textSize="15dp"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tvFromDateTime" android:layout_centerVertical="true"
-        android:textSize="24sp" />
-
+        android:layout_marginStart="16dp" android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/etToDateTime" />
     <EditText
-        android:id="@+id/etKeywords" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:layout_alignStart="@+id/go"
-        android:layout_centerVertical="true" android:ems="10"
-        android:textSize="24sp" />
-    <Button
-        android:id="@+id/btnCancel" android:text="Cancel" android:onClick="cancel"
+        android:id="@+id/etKeywords" android:hint="" android:textSize="15dp" android:inputType="textPersonName"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" android:layout_marginRight="55dp"
-        android:layout_marginEnd="55dp" />
+        android:layout_marginStart="16dp" android:layout_marginTop="16dp" android:ems="10" android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/tvKeywords" />
     <Button
-        android:id="@+id/go"  android:onClick="go" android:text="Go"
+        android:id="@+id/btnGo" android:onClick="go" android:text="Go"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true" android:layout_alignTop="@+id/btnCancel"
-        android:layout_marginEnd="128dp" />
-
-</RelativeLayout>
+        android:layout_marginEnd="16dp" android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/btnCancel" android:onClick="cancel" android:text="Cancel"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp" android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="@+id/btnGo" />
+</androidx.constraintlayout.widget.ConstraintLayout >
