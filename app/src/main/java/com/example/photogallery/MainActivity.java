@@ -1,8 +1,11 @@
 package com.example.photogallery;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.content.Intent;
 import android.os.Environment;
@@ -22,9 +25,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import androidx.core.content.ContextCompat;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.core.content.ContextCompat;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+public class MainActivity extends AppCompatActivity implements LocationListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int SEARCH_ACTIVITY_REQUEST_CODE = 2;
     static final int SETTINGS_ACTIVITY_REQUEST_CODE = 3;
@@ -35,11 +42,20 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> photos = null;
     private int index = 0;
     private String lastDisplayedPhotoPath; // Store the path of the last displayed photo
-
+    private LocationManager locationManager;
+    public static Location lastLoc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Retrieve location info
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, this);
+
 
         // Initialize photos based on the last search filter or default if savedInstanceState is null
         if (savedInstanceState != null) {
@@ -59,6 +75,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        lastLoc = location;
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+        LocationListener.super.onLocationChanged(locations);
+
+        if(locations.size() > 0)
+            lastLoc = locations.get(locations.size() - 1);
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -148,21 +176,25 @@ public class MainActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         TextView tv = (TextView) findViewById(R.id.tvTimestamp);
         EditText et = (EditText) findViewById(R.id.etCaption);
+        TextView tv_location = (TextView) findViewById(R.id.tvLocation);
         if (path == null || path =="") {
             iv.setImageResource(R.mipmap.ic_launcher);
             et.setText("");
             tv.setText("");
+            tv_location.setText("");
         } else {
             iv.setImageBitmap(BitmapFactory.decodeFile(path));
             String[] attr = path.split("_");
             et.setText(attr[1]);
             tv.setText(attr[2] + "_" + attr[3]);
+            tv_location.setText("(Lat) " + attr[4] + "\n(Lng) " + attr[5]);
         }
     }
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "_caption_" + timeStamp + "_";
+        String imageFileName = "_caption_" + timeStamp + "_"
+                + String.valueOf(lastLoc.getLatitude()) + "_" + String.valueOf(lastLoc.getLongitude()) + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg",storageDir);
         mCurrentPhotoPath = image.getAbsolutePath();

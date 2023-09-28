@@ -17,40 +17,92 @@
         android:layout_marginStart="16dp" android:layout_marginTop="40dp" android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivGallery" />
+
     <TextView
-        android:id="@+id/tvTimestamp" android:text="" android:textSize="25dp"
-android:layout_width="0dp" android:layout_height="wrap_content"
-    android:layout_marginStart="16dp" android:layout_marginTop="40dp"
-    android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/etCaption" />
-<Button
-    android:id="@+id/btnSnap" android:onClick="takePhoto" android:text="snap"
+        android:id="@+id/timestampLabel"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        android:text="Time"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCaption" />
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="250dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        android:text=""
+        android:textSize="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCaption" />
+
+    <TextView
+        android:id="@+id/locationLabel"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
+        android:text="Location"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timestampLabel" />
+
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
+        android:text=""
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTimestamp" />
+
+    <Button
+        android:id="@+id/btnSnap" android:onClick="takePhoto" android:text="snap"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp" android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+    android:id="@+id/btnPrev" android:onClick="scrollPhotos" android:text="prev"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_marginStart="16dp" android:layout_marginBottom="16dp"
+    app:layout_constraintBottom_toTopOf="@+id/btnUpload" app:layout_constraintStart_toStartOf="parent" />
+    <Button
+    android:id="@+id/btnNext" android:onClick="scrollPhotos" android:text="next"
     android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:layout_marginEnd="16dp" android:layout_marginBottom="16dp"
-    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" />
-<Button
-android:id="@+id/btnPrev" android:onClick="scrollPhotos" android:text="prev"
-android:layout_width="wrap_content" android:layout_height="wrap_content"
-android:layout_marginStart="16dp" android:layout_marginBottom="16dp"
-app:layout_constraintBottom_toTopOf="@+id/btnUpload" app:layout_constraintStart_toStartOf="parent" />
-<Button
-android:id="@+id/btnNext" android:onClick="scrollPhotos" android:text="next"
-android:layout_width="wrap_content" android:layout_height="wrap_content"
-android:layout_marginEnd="16dp" android:layout_marginBottom="16dp"
-app:layout_constraintBottom_toTopOf="@+id/btnSnap" app:layout_constraintEnd_toEndOf="parent" />
-<Button
-android:id="@+id/btnSearch" android:onClick="filter" android:text="search"
-android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/btnSnap" app:layout_constraintStart_toEndOf="@+id/btnUpload" />
-<Button
-    android:id="@+id/btnUpload" android:text="upload" android:onClick="uploadPhoto"
-    android:layout_width="94dp" android:layout_height="wrap_content" android:layout_marginBottom="16dp"
-    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-    android:layout_marginStart="16dp" />
-<Button
-android:id="@+id/btnSettings" android:onClick="editSettings" android:text="Settings"
-android:layout_width="wrap_content" android:layout_height="wrap_content"
-android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/btnSearch"
-app:layout_constraintStart_toEndOf="@+id/btnPrev" app:layout_constraintEnd_toStartOf="@+id/btnNext" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    app:layout_constraintBottom_toTopOf="@+id/btnSnap" app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+    android:id="@+id/btnSearch" android:onClick="filter" android:text="search"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnSnap" app:layout_constraintStart_toEndOf="@+id/btnUpload" />
+    <Button
+        android:id="@+id/btnUpload" android:text="upload" android:onClick="uploadPhoto"
+        android:layout_width="94dp" android:layout_height="wrap_content" android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp" />
+    <Button
+    android:id="@+id/btnSettings" android:onClick="editSettings" android:text="Settings"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/btnSearch"
+    app:layout_constraintStart_toEndOf="@+id/btnPrev" app:layout_constraintEnd_toStartOf="@+id/btnNext" />
+</androidx.constraintlayout.widget.ConstraintLayout>

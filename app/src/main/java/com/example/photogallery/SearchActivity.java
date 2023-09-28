@@ -38,6 +38,10 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         try {
+            // Grab the current location details
+            var currLongitude = getIntent().getStringExtra("CURR_LONGITUDE");
+            var currLatitude = getIntent().getStringExtra("CURR_LATITUDE");
+
             Calendar calendar = Calendar.getInstance();
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Date now = calendar.getTime();
@@ -50,6 +54,10 @@ public class SearchActivity extends AppCompatActivity {
                     "yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(today));
             etToDateTime.setText(new SimpleDateFormat(
                     "yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(tomorrow));
+
+            //Set the longitude and latitude to the current GPS by default
+            ((EditText) findViewById(R.id.etLongitude)).setText(currLongitude);
+            ((EditText) findViewById(R.id.etLatitude)).setText(currLatitude);
         } catch (Exception ex) { }
     }
 
@@ -59,12 +67,19 @@ public class SearchActivity extends AppCompatActivity {
     }
     public void go(final View v) {
         Intent i = new Intent();
+        // Timestamp and Keyword
         EditText from = (EditText) findViewById(R.id.etFromDateTime);
         EditText to = (EditText) findViewById(R.id.etToDateTime);
         EditText keywords = (EditText) findViewById(R.id.etKeywords);
+        // Location fields
+        EditText longitude = (EditText) findViewById(R.id.etLongitude);
+        EditText latitude = (EditText) findViewById(R.id.etLatitude);
+
         i.putExtra("STARTTIMESTAMP", from.getText() != null ? from.getText().toString() : "");
         i.putExtra("ENDTIMESTAMP", to.getText() != null ? to.getText().toString() : "");
         i.putExtra("KEYWORDS", keywords.getText() != null ? keywords.getText().toString() : "");
+        i.putExtra("LONGITUDE", longitude.getText() != null ? longitude.getText().toString() : "");
+        i.putExtra("LATITUDE", latitude.getText() != null ? latitude.getText().toString() : "");
         setResult(RESULT_OK, i);
         finish();
     }
