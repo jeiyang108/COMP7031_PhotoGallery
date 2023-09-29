@@ -81,5 +81,20 @@ public class SQLiteStorage {
         return 0;
     }
 
+    public int deletePhotos() {
+        if(!db.isOpen()) { return -1; }
+        db.beginTransaction();
+        try{
+            String sqlStmt = "delete from photos;";
+            db.execSQL(sqlStmt);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            return -1;
+        } finally {
+            db.endTransaction();
+        }
+        return 0;
+    }
+
 }
 

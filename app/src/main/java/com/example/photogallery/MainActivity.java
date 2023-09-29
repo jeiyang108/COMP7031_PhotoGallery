@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, this);
 
+        lastLoc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         // Initialize photos based on the last search filter or default if savedInstanceState is null
         if (savedInstanceState != null) {

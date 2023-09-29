@@ -13,7 +13,7 @@ public class WebAccess {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setUseCaches(false);
             conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod("PUT"); // Change to PUT
             String boundary = "===" + System.currentTimeMillis() + "===";
             String lineFeed = "\r\n";
             conn.setRequestProperty("Connection", "Keep-Alive");
