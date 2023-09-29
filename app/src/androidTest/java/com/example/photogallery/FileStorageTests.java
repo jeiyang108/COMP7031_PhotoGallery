@@ -43,6 +43,7 @@ public class FileStorageTests {
         }
     }
 
+    // For SQLiteStorage usage
     @Before
     public void initialization() {
         appContext = InstrumentationRegistry.getTargetContext();
@@ -52,6 +53,7 @@ public class FileStorageTests {
         status = fs.addPhoto("cafe", "2018-08-25 13:20:21", "test_cafe_2018-08-25 13:20:21_12345.jpg");
         status = fs.addPhoto("cafe", "2017-08-25 13:20:21", "test_cafe_2017-08-25 13:20:21_54321.jpg");
     }
+    // For SQLiteStorage usage
     @After
     public void finalization() {
         int status = fs.deletePhoto("test_cafe_2018-08-25 13:20:21_12345.jpg");
@@ -69,7 +71,7 @@ public class FileStorageTests {
         try {
             //test_cafe_2018-08-25 13:20:21_12345.jpg
             Calendar calendar = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Needs to be reformatted for FileStorage
             startTimestamp = format.parse("2017-08-25 13:20:21");
             calendar.setTime(startTimestamp);
             calendar.add(Calendar.MINUTE, -5); // Set a start time 5 minutes before the specified time
@@ -88,13 +90,16 @@ public class FileStorageTests {
         // Verify that multiple photos within the time window are found
         assertTrue(photos.size() > 1);
 
-        // Verify that all found photos have timestamps within the specified time window
+        // Verify that all found photos have timestamps within the specified time window (for timestamp search)
+        /*
         for (String photoPath : photos) {
             Date photoTimestamp = parseTimestampFromPath(photoPath);
-            //assertTrue(photoTimestamp != null);
-            //assertTrue(photoTimestamp.after(startTimestamp) || photoTimestamp.equals(startTimestamp));
-            //assertTrue(photoTimestamp.before(endTimestamp) || photoTimestamp.equals(endTimestamp));
+            assertTrue(photoTimestamp != null);
+            assertTrue(photoTimestamp.after(startTimestamp) || photoTimestamp.equals(startTimestamp));
+            assertTrue(photoTimestamp.before(endTimestamp) || photoTimestamp.equals(endTimestamp));
         }
+        */
+
     }
 
     private Date parseTimestampFromPath(String path) {
