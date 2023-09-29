@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
     public String updatePhoto(String path, String caption) {
         String[] attr = path.split("_");
-        String newPath = attr[0] + "_" + caption + "_" + attr[2] + "_" + attr[3] + "_" + attr[4];
+        String newPath = attr[0] + "_" + caption + "_" + attr[2] + "_" + attr[3] + "_" + attr[4] + "_" + attr[5]; //37.42200
         File to = new File(newPath);
         File from = new File(path);
         from.renameTo(to);

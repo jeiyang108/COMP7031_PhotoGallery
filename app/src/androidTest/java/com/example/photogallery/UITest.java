@@ -16,6 +16,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertTrue;
 
+import android.location.Location;
 import android.view.View;
 import android.widget.DatePicker;
 
@@ -47,12 +48,6 @@ public class UITest {
 
         // Find and Click the Search Button
         onView(withText("search")).perform(click());
-        // Find From and To fields in the Search layout and fill these with the above test data
-        String from = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(startTimestamp);
-        String to = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(endTimestamp);
-        onView(withId(R.id.etFromDateTime)).perform(replaceText(from), closeSoftKeyboard());
-        onView(withId(R.id.etToDateTime)).perform(replaceText(to), closeSoftKeyboard());
-
 
         // Find the "From Date" and "To Date" EditText fields
         onView(withId(R.id.etFromDateTime)).perform(click());
@@ -113,6 +108,22 @@ public class UITest {
         onView(withId(R.id.btnGo)).perform(click());
         //Verify that the caption of the found Image matches the Expected value
         onView(withId(R.id.etCaption)).check(matches(withText(keyword)));
+    }
+
+    @Test /* Find Photos Test - Location-based Search*/
+    public void locationBasedSearch() throws Exception {
+        String latitude = "37.42200";
+        //Find and Click the Search Button
+        onView(withText("search")).perform(click());
+        //Find Keyword in the Search layout and fill these with the above test data
+        onView(withId(R.id.etLatitude)).perform(replaceText(latitude), closeSoftKeyboard());
+        //leave the keywords field blank
+        onView(withId(R.id.etLongitude)).perform(replaceText(""), closeSoftKeyboard());
+        //Find and Click the GO button on the Search View
+        onView(withId(R.id.btnGo)).perform(click());
+        //Verify that the location value of the found Image contains the expected latitude
+        assertTrue(getTextFromView(withId(R.id.tvLocation)).contains(latitude));
+
     }
 
     @Test /* Find Photos Test*/
