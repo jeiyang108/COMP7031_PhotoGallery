@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             index = savedInstanceState.getInt("index");
             lastDisplayedPhotoPath = savedInstanceState.getString("lastDisplayedPhotoPath");
         } else {
-            photos = findPhotos(new Date(Long.MIN_VALUE), new Date(), "");
+            photos = findPhotos(new Date(Long.MIN_VALUE), new Date(), "", "", "");
             lastDisplayedPhotoPath = null; // Initialize with no last displayed photo
         }
 
@@ -194,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "_caption_" + timeStamp + "_"
-                + String.valueOf(lastLoc.getLatitude()) + "_" + String.valueOf(lastLoc.getLongitude()) + "_";
+                + String.format("%.5f", lastLoc.getLatitude()) + "_" + String.format("%.5f", lastLoc.getLongitude()) + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg",storageDir);
         mCurrentPhotoPath = image.getAbsolutePath();
@@ -217,8 +218,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     endTimestamp = null;
                 }
                 String keywords = (String) data.getStringExtra("KEYWORDS");
+                // Grab the current location details
+                var longitude = getIntent().getStringExtra("LONGITUDE");
+                var latitude = getIntent().getStringExtra("LATITUDE");
                 index = 0;
-                photos = findPhotos(startTimestamp, endTimestamp, keywords);
+                photos = findPhotos(startTimestamp, endTimestamp, keywords, longitude, latitude);
                 if (photos.size() == 0) {
                     displayPhoto(null);
                 } else {
@@ -230,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
             displayPhoto(mCurrentPhotoPath);
             index = 0;
-            photos = findPhotos(new Date(Long.MIN_VALUE), new Date(), "");
+            photos = findPhotos(new Date(Long.MIN_VALUE), new Date(), "", "", "");
         }
     }
     public String updatePhoto(String path, String caption) {
@@ -241,21 +245,43 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         from.renameTo(to);
         return newPath;
     }
-    private ArrayList<String> findPhotos(Date startTimestamp, Date endTimestamp, String keywords) {
+    private ArrayList<String> findPhotos(Date startTimestamp, Date endTimestamp, String keywords, String longitude, String latitude) {
         File folder = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
         ArrayList<String> photos = new ArrayList<String>();
         File[] fList = folder.listFiles();
         if (fList != null) {
             for (File f : fList) {
-                if (((startTimestamp == null && endTimestamp == null) || (f.lastModified() >= startTimestamp.getTime()
-                        && f.lastModified() <= endTimestamp.getTime())
-                ) && (keywords == "" || f.getPath().contains(keywords)))
+                if (((startTimestamp == null && endTimestamp == null) ||
+                        (f.lastModified() >= startTimestamp.getTime()
+                        && f.lastModified() <= endTimestamp.getTime()))
+                    && (keywords == "" || f.getPath().contains(keywords))
+                    && ((latitude == "" && longitude == "") || withinDistance(f.getPath(), latitude, longitude))
+                )
                     photos.add(f.getPath());
             }
         }
         return photos;
     }
+
+    private boolean withinDistance(String path, String latitude, String longitude) {
+        String[] attr = path.split("_");
+        double fileLatitude = Double.parseDouble(attr[4]);
+        double fileLongitude = Double.parseDouble(attr[5]);
+        double searchLatitude = Double.parseDouble(latitude);
+        double searchLongitude = Double.parseDouble(longitude);
+
+        float[] result = new float[1];
+        Location.distanceBetween(fileLatitude, fileLongitude, searchLatitude, searchLongitude, result);
+        boolean isWithin50km = false;
+
+        if (result[0] < 50000) {
+            // distance between first and second location is less than 50km
+            isWithin50km = true;
+        }
+        return isWithin50km;
+    }
+
     public void filter(View v) {
         Intent i = new Intent(MainActivity.this, SearchActivity.class);
         startActivityForResult(i, SEARCH_ACTIVITY_REQUEST_CODE);
@@ -264,4 +290,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
     public void editSettings(View v) {
     }
+
 }
